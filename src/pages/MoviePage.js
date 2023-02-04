@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import MovieCard, { MovieCardSkeleton } from "../components/movie/MovieCard";
-import MovieList from "../components/movie/MovieList";
 import { fetcher, tmdbAPI } from "../config";
 import useDebounce from "../hooks/useDebounce";
 import ReactPaginate from "react-paginate";
 import { v4 } from "uuid";
+import Footer from "components/layout/Footer";
 
 const itemsPerPage = 20;
 const MoviePage = () => {
     const [nextPage, setNextPage] = useState(1);
     const [filter, setFilter] = useState("");
     const [url, setUrl] = useState(tmdbAPI.getMovieList("popular", nextPage));
-    const filterDebounce = useDebounce(filter, 1000);
+    const filterDebounce = useDebounce(filter, 3000);
     const handleFilterChange = (e) => {
         setFilter(e.target.value);
     };
@@ -40,19 +40,20 @@ const MoviePage = () => {
         setItemOffset(newOffset);
         setNextPage(event.selected + 1);
     };
-
+    // console.log(filterDebounce);
+    // console.log("movies ~ ", movies);
     return (
         <div className="py-10 page-container">
             <div className="flex mb-10">
                 <div className="flex-1">
                     <input
                         type="text"
-                        className="w-full outline-none p-4 bg-slate-800"
+                        className="w-full outline-none p-4 bg-slate-800 rounded-l-lg"
                         placeholder="Type here to search..."
                         onChange={handleFilterChange}
                     />
                 </div>
-                <button className="p-4 bg-primary text-white">
+                <button className="p-4 bg-primary text-white rounded-r-lg">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -69,9 +70,6 @@ const MoviePage = () => {
                     </svg>
                 </button>
             </div>
-            {/* {loading && (
-                <div className="w-10 h-10 rounded-full border border-t-transparent border-t-4 border-4 border-primary mx-auto animate-spin"></div>
-            )} */}
             {loading && (
                 <div className="grid grid-cols-4 gap-10">
                     {new Array(itemsPerPage).fill(0).map(() => (
@@ -82,22 +80,21 @@ const MoviePage = () => {
             <div className="grid grid-cols-4 gap-10">
                 {!loading &&
                     movies.length > 0 &&
-                    movies.map((item) => (
-                        <MovieCard key={item.id} item={item}></MovieCard>
-                    ))}
+                    movies.map((item) => <MovieCard key={item.id} item={item}></MovieCard>)}
             </div>
             <div className="mt-10">
                 <ReactPaginate
                     breakLabel="..."
-                    nextLabel="next >"
+                    nextLabel="Next >"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
                     pageCount={pageCount}
-                    previousLabel="< previous"
+                    previousLabel="< Prev"
                     renderOnZeroPageCount={null}
                     className="pagination"
                 />
             </div>
+            <Footer></Footer>
         </div>
     );
 };

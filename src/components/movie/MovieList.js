@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import MovieCard, { MovieCardSkeleton } from "./MovieCard";
 import useSWR from "swr";
@@ -9,18 +9,12 @@ const MovieList = ({ type = "now_playing" }) => {
     const { data, error } = useSWR(tmdbAPI.getMovieList(type), fetcher);
     const isLoading = !data && !error;
     const movies = data?.results || [];
-    // useEffect(() => {
-    //     if (data && data.results) setMovies(data.results);
-    // }, [data]);
+    // console.log("movies ~ ", movies);
     return (
         <div className="movie-list">
             {isLoading && (
                 <>
-                    <Swiper
-                        grabCursor={"true"}
-                        spaceBetween={40}
-                        slidesPerView={"auto"}
-                    >
+                    <Swiper grabCursor={"true"} spaceBetween={40} slidesPerView={"auto"}>
                         <SwiperSlide>
                             <MovieCardSkeleton></MovieCardSkeleton>
                         </SwiperSlide>
@@ -37,11 +31,7 @@ const MovieList = ({ type = "now_playing" }) => {
                 </>
             )}
             {!isLoading && (
-                <Swiper
-                    grabCursor={"true"}
-                    spaceBetween={40}
-                    slidesPerView={"auto"}
-                >
+                <Swiper grabCursor={"true"} spaceBetween={40} slidesPerView={"auto"}>
                     {movies.length > 0 &&
                         movies.map((item) => (
                             <SwiperSlide key={item.id}>

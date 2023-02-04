@@ -28,7 +28,7 @@
     justify-content: center;
     gap: 20px;
     .selected {
-        @apply text-primary;
+        @apply px-3 py-1 text-white bg-blue-600 rounded-md;
     }
 }
 // skeleton

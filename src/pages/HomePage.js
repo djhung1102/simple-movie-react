@@ -1,3 +1,4 @@
+import Footer from "components/layout/Footer";
 import React, { Fragment } from "react";
 import MovieList from "../components/movie/MovieList";
 
@@ -22,6 +23,7 @@ const HomePage = () => {
                 </h2>
                 <MovieList type="popular"></MovieList>
             </section>
+            <Footer></Footer>
         </Fragment>
     );
 };
